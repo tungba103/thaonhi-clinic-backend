@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 
 const PORT = process.env.PORT || 9999;
+const GLOBAL_PREFIX = 'api/v1';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,13 +15,12 @@ async function bootstrap() {
     }),
   );
 
-  const globalPrefix = 'api/v1';
-  app.setGlobalPrefix(globalPrefix);
+  app.setGlobalPrefix(GLOBAL_PREFIX);
   setupOpenApi(app);
 
   await app.listen(PORT);
   console.log(
-    `Application is running on: http://localhost:${PORT}/${globalPrefix}`,
+    `Application is running on: http://localhost:${PORT}/${GLOBAL_PREFIX}`,
   );
 
   console.log(

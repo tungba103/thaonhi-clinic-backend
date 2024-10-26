@@ -3,13 +3,12 @@ import {
   Post,
   Body,
   Req,
-  UseGuards,
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { LoginDto } from './dto/login.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { AuthClaims } from 'src/decorators/claims-auth.decorator';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -36,7 +35,7 @@ export class AuthController {
     return this.authService.login(user);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @AuthClaims()
   @Post('logout')
   async logout(@Req() req: any) {
     await this.authService.revokeRefreshToken(req.user.id);
